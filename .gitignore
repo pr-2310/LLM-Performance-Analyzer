@@ -1,0 +1,4 @@
+output
+tmp
+*.pyc
+.vscode
