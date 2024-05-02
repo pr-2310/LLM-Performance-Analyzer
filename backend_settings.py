@@ -1,18 +1,6 @@
 from hardwares.hardware_params import hardware_params
 
 available_model_ids_sources = {
-    "meta-llama/Llama-2-7b-hf": {"source": "huggingface"},
-    "meta-llama/Llama-2-13b-hf": {"source": "huggingface"},
-    "meta-llama/Llama-2-70b-hf": {"source": "huggingface"},
-    "THUDM/chatglm3-6b": {"source": "huggingface"},
-    "facebook/opt-125m": {"source": "huggingface"},
-    "facebook/opt-1.3b": {"source": "huggingface"},
-    "facebook/opt-2.7b": {"source": "huggingface"},
-    "facebook/opt-6.7b": {"source": "huggingface"},
-    "facebook/opt-30b": {"source": "huggingface"},
-    "facebook/opt-66b": {"source": "huggingface"},
-    "DiT-XL/2": {"source": "DiT"},
-    "DiT-XL/4": {"source": "DiT"},
     "custom:2835268853104115712": {
         "source": "custom",
         "endpoint_id": "2835268853104115712",
@@ -33,6 +21,20 @@ available_model_ids_sources = {
         "project_id": "604007508233",
         "location": "us-central1",
         "model_name": "LLAMA-2-13b"
+    },
+    "custom:2835268853104115712": {
+        "source": "custom",
+        "endpoint_id": "2835268853104115712",
+        "project_id": "604007508233",
+        "location": "us-central1",
+        "model_name": "opt-1.3b"
+    },
+    "custom:2835268853104115712": {
+        "source": "custom",
+        "endpoint_id": "2835268853104115712",
+        "project_id": "604007508233",
+        "location": "us-central1",
+        "model_name": "opt-2.7b"
     },
     # Add more custom endpoints as needed
 }
