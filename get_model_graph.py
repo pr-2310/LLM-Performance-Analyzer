@@ -18,10 +18,10 @@ def get_analyzer(model_id, hardware, config_path) -> ModelAnalyzer:
         project_id = available_model_ids_sources[model_id]["project_id"]
         location = available_model_ids_sources[model_id]["location"]
 
-        # Load the appropriate configuration file based on the model ID
+        
         config_file = f"configs/{endpoint_id}.py"
 
-        # Get the model information from the custom endpoint
+        
         endpoint = aiplatform.Endpoint(
             endpoint_name=f"projects/{project_id}/locations/{location}/endpoints/{endpoint_id}"
         )
