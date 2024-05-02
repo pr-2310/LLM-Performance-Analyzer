@@ -19,7 +19,7 @@ ALL_DATA_NAMES = [
 
 
 class ModelAnalyzer:
-    def __init__(self, model_id, hardware, config_file=None, source="huggingface", model_info=None):
+    def __init__(self, model_id, hardware, config_file=None, source="custom", model_info=None):
         self.model_id = model_id
         self.hardware = hardware
         self.config_file = self._find_config_file(config_file)
