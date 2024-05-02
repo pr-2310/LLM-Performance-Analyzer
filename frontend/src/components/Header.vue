@@ -19,7 +19,7 @@
         <span> | </span>
         <span>Server: </span>
         <select v-model="ip_port" class="dropdown-style">
-            <option value="api.llm-viewer.com:5000">gcp_endpoint</option>
+            <option value="">gcp_endpoint</option>
             <!-- <option value="https://us-central1-aiplatform.googleapis.com/v1/projects/604007508233/locations/us-central1/endpoints/58166364132605952:predict">https://us-central1-aiplatform.googleapis.com/v1/projects/604007508233/locations/us-central1/endpoints/58166364132605952</option> -->
             <option value="127.0.0.1:5000">127.0.0.1</option>
         </select>

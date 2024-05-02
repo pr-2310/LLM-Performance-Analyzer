@@ -12,21 +12,27 @@ ALL_DATA_NAMES = [
     "load_weight",
     "load_act",
     "store_act",
-    "load_kv_cache", 
+    "load_kv_cache",
     "store_kv_cache",
     "inference_time",
 ]
 
 
 class ModelAnalyzer:
-    def __init__(self, model_id, hardware, config_file=None, source="huggingface"):
+    def __init__(self, model_id, hardware, config_file=None, source="huggingface", model_info=None):
         self.model_id = model_id
         self.hardware = hardware
         self.config_file = self._find_config_file(config_file)
-        self.model_params = self._load_model_params(source)
-        self.config = importlib.import_module(
-            self.config_file.replace("/", ".").replace(".py", "")
-        )
+        
+        if source == "custom":
+            self.model_params = model_info
+            self.config = importlib.import_module(config_file.replace(".py", ""))
+        else:
+            self.model_params = self._load_model_params(source)
+            self.config = importlib.import_module(
+                self.config_file.replace("/", ".").replace(".py", "")
+            )
+        
         self.results = None
         self.w_bit = None
         self.a_bit = None
@@ -49,6 +55,8 @@ class ModelAnalyzer:
     def _load_model_params(self, source):
         if source == "huggingface":
             return AutoConfig.from_pretrained(self.model_id, trust_remote_code=True)
+        elif source == "custom":
+            raise ValueError("Custom source type should be handled in the __init__ method.")
         else:
             module = importlib.import_module(f"model_params.{source}")
             return module.model_params[self.model_id]
@@ -421,4 +429,8 @@ class ModelAnalyzer:
             GQA = False
 
         info = {"GQA": GQA}
+        
+        if hasattr(self.model_params, "custom_info"):
+            info.update(self.model_params.custom_info)
+        
         return info

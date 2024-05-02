@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 import importlib
 import os
+from google.cloud import aiplatform
 from hardwares.hardware_params import hardware_params
 from model_analyzer import ModelAnalyzer
 from utils import str_number
@@ -12,15 +13,37 @@ config_cache = {}
 
 
 def get_analyzer(model_id, hardware, config_path) -> ModelAnalyzer:
-    config = f"{model_id}_{hardware}_{config_path}"
-    if config not in config_cache:
-        config_cache[config] = ModelAnalyzer(
+    if model_id.startswith("custom:"):
+        endpoint_id = model_id.split(":")[-1]
+        project_id = available_model_ids_sources[model_id]["project_id"]
+        location = available_model_ids_sources[model_id]["location"]
+
+        # Load the appropriate configuration file based on the model ID
+        config_file = f"configs/{endpoint_id}.py"
+
+        # Get the model information from the custom endpoint
+        endpoint = aiplatform.Endpoint(
+            endpoint_name=f"projects/{project_id}/locations/{location}/endpoints/{endpoint_id}"
+        )
+        model_info = endpoint.list_models()[0]
+
+        return ModelAnalyzer(
             model_id,
             hardware,
-            config_path,
-            source=available_model_ids_sources[model_id]["source"],
+            config_file,
+            source="custom",
+            model_info=model_info
         )
-    return config_cache[config]
+    else:
+        config = f"{model_id}_{hardware}_{config_path}"
+        if config not in config_cache:
+            config_cache[config] = ModelAnalyzer(
+                model_id,
+                hardware,
+                config_path,
+                source=available_model_ids_sources[model_id]["source"],
+            )
+        return config_cache[config]
 
 
 def get_quant_bit(dtype):
@@ -41,6 +64,7 @@ def analyze_model(model_id, hardware, config_path, inference_config):
     use_flashattention = bool(inference_config["use_flashattention"])
     gen_length = int(inference_config["gen_length"])
 
+    # Pass the loaded configuration file to the ModelAnalyzer
     analyzer = get_analyzer(model_id, hardware, config_path)
     result = analyzer.analyze(
         seqlen=seq_length,

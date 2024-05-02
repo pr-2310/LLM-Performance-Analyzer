@@ -1,33 +1,50 @@
 <script setup>
-import Graph from "./components/Graph.vue"
-import LeftPannel from "./components/LeftPannel.vue"
-import Header from "./components/Header.vue"
-import { ref, provide } from 'vue';
+import Graph from "./components/Graph.vue";
+import LeftPannel from "./components/LeftPannel.vue";
+import Header from "./components/Header.vue";
+import { ref, provide, onMounted } from 'vue';
+import axios from 'axios';
 
 const model_id = ref("meta-llama/Llama-2-7b-hf");
 const hardware = ref("nvidia_A6000");
 const global_update_trigger = ref(1);
 const total_results = ref({});
 const ip_port = ref("api.llm-viewer.com:5000");
+const availableModelIds = ref([]);
 
 provide("model_id", model_id);
 provide("hardware", hardware);
 provide("global_update_trigger", global_update_trigger);
 provide("total_results", total_results);
 provide("ip_port", ip_port);
+provide("availableModelIds", availableModelIds);
 
-const global_inference_config = ref({ 
-  "stage": "decode", 
-  batch_size: 1, 
-  seq_length: 1024, 
+const global_inference_config = ref({
+  "stage": "decode",
+  batch_size: 1,
+  seq_length: 1024,
   gen_length: 1,
-  w_quant: "FP16", 
-  a_quant: "FP16", 
-  kv_quant: "FP16", 
+  w_quant: "FP16",
+  a_quant: "FP16",
+  kv_quant: "FP16",
   use_flashattention: false
 });
+
 provide("global_inference_config", global_inference_config);
 
+async function fetchAvailableModels() {
+  try {
+    const serverUrl = ip_port.value.startsWith("localhost") ? `http://${ip_port.value}` : `https://${ip_port.value}`;
+    const response = await axios.get(`${serverUrl}/get_available`);
+    availableModelIds.value = response.data.available_model_ids;
+  } catch (error) {
+    console.error('Error fetching available models:', error);
+  }
+}
+
+onMounted(() => {
+  fetchAvailableModels();
+});
 </script>
 
 <template>
@@ -78,5 +95,4 @@ body {
     flex-direction: row;
   }
 }
-
 </style>
