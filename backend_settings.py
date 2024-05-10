@@ -22,14 +22,14 @@ available_model_ids_sources = {
         "location": "us-central1",
         "model_name": "LLAMA-2-13b"
     },
-    "custom:2835268853104115712": {
+    "custom:7865268853104115712": {
         "source": "custom",
         "endpoint_id": "2835268853104115712",
         "project_id": "604007508233",
         "location": "us-central1",
         "model_name": "opt-1.3b"
     },
-    "custom:2835268853104115712": {
+    "custom:8975268853104115712": {
         "source": "custom",
         "endpoint_id": "2835268853104115712",
         "project_id": "604007508233",

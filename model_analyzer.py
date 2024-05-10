@@ -60,7 +60,18 @@ class ModelAnalyzer:
         else:
             module = importlib.import_module(f"model_params.{source}")
             return module.model_params[self.model_id]
-
+        
+    def load_model(model_id):
+        # Load the hosted LLM based on the model_id
+        if model_id.startswith("custom:"):
+            # Load the custom model from the hosted endpoint
+            endpoint_id = model_id.split(":")[-1]
+            model = load_custom_model(endpoint_id)
+        else:
+            # Load the model from Hugging Face or other sources
+            model = AutoModelForCausalLM.from_pretrained(model_id)
+        return model
+    
     def _analyze_to_results(self, stage, name, **kwargs):
         bandwidth, max_OPS, onchip_buffer = self.get_hardware_info()
         memory_access = sum(kwargs.values())
