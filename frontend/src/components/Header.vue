@@ -1,26 +1,23 @@
 <template>
     <div class="title">
         <a class="hover-bold">Comparitive Analysis of LLMs</a>
-        v{{ version }}
+        <!-- v{{ version }} -->
     </div>
     <div class="header_button">
-        |
-        <span>LLM Model: </span>
-        <select v-model="select_model_id" class="dropdown-style">
+        <span style="color: #333333;"> | </span>
+        <span class="bold-and-stylish">Model : </span>
+        <select v-model="select_model_id">
             <option v-for="model_id in avaliable_model_ids" :value="model_id">{{ model_id }}</option>
         </select>
-        <span> | </span>
-        <span>Hardware: </span>
-        <select v-model="select_hardware" class="dropdown-style">
+        <span style="color: #333333;"> | </span>
+        <span class="bold-and-stylish">Hardware: </span>
+        <select v-model="select_hardware">
             <option v-for="hardware in avaliable_hardwares" :value="hardware">{{ hardware }}</option>
         </select>
-    </div>
-    <div>
-        <span> | </span>
-        <span>Server: </span>
-        <select v-model="ip_port" class="dropdown-style">
+        <span style="color: #333333;"> | </span>
+        <span class="bold-and-stylish">Server: </span>
+        <select v-model="ip_port">
             <option value="">gcp_endpoint</option>
-            <!-- <option value="https://us-central1-aiplatform.googleapis.com/v1/projects/604007508233/locations/us-central1/endpoints/58166364132605952:predict">https://us-central1-aiplatform.googleapis.com/v1/projects/604007508233/locations/us-central1/endpoints/58166364132605952</option> -->
             <option value="127.0.0.1:5000">127.0.0.1</option>
         </select>
     </div>
@@ -28,7 +25,8 @@
 
 <script setup>
 import { inject, ref, watch, onMounted } from 'vue';
-import axios from 'axios'
+import axios from 'axios';
+
 const model_id = inject('model_id');
 const hardware = inject('hardware');
 const global_update_trigger = inject('global_update_trigger');
@@ -39,11 +37,11 @@ const avaliable_model_ids = ref([]);
 
 const version = ref(llm_viewer_frontend_version)
 
+const is_show_help = ref(false)
 
 function update_avaliable() {
     const url = 'http://' + ip_port.value + '/get_avaliable'
     axios.get(url).then(function (response) {
-        console.log(response);
         avaliable_hardwares.value = response.data.avaliable_hardwares
         avaliable_model_ids.value = response.data.avaliable_model_ids
     })
@@ -60,24 +58,19 @@ onMounted(() => {
 
 var select_model_id = ref('meta-llama/Llama-2-7b-hf');
 watch(select_model_id, (n) => {
-    console.log("select_model_id", n)
     model_id.value = n
     global_update_trigger.value += 1
 })
 
 var select_hardware = ref('nvidia_V100');
 watch(select_hardware, (n) => {
-    console.log("select_hardware", n)
     hardware.value = n
     global_update_trigger.value += 1
 })
 
 watch(ip_port, (n) => {
-    console.log("ip_port", n)
     update_avaliable()
 })
-
-
 </script>
 
 <style scoped>
@@ -86,58 +79,94 @@ watch(ip_port, (n) => {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #000000;
+    border: none;
+    background-color: #4a90e2;
+    color: #ffffff;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .header_button button:hover {
-    color: #fff;
-    background-color: #000;
+    background-color: #357abd;
 }
 
 .header_button button:active {
-    color: #fff;
-    background-color: #000;
+    background-color: #2a5c9a;
 }
 
 .active {
-    color: #fff;
-    background-color: #5b5b5b;
+    background-color: #2a5c9a;
 }
 
 .title {
-    font-size: 18px;
+    font-size: 20px;
+    color: #333333;
     text-align: left;
+    font-weight: bold;
+    padding-right: 10px;
 }
 
-.hover-bold{
-    color: inherit;
+.bold-and-stylish {
+    font-weight: bold;
+    color: #333333;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.hover-bold {
+    color: #333333;
+    transition: font-weight 0.3s;
 }
 
 .hover-bold:hover {
     font-weight: bold;
 }
 
+select {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    outline: 1;
+    background: #fff;
+    border: #000;
+    color: #000;
+    border: 1px solid crimson;
+    padding: 8px;
+    border-radius: 10px;
+}
+
 .float-info-window {
+    color: #333333;
     position: absolute;
-    top: 80px;
-    left: 40%;
-    height: auto;
-    width: 30%;
-    background-color: #f1f1f1ed;
+    top: 60px;
+    left: 75%;
+    transform: translateX(-50%);
+    width: 40%;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     z-index: 999;
 }
 
-.dropdown-style {
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #e8e8f0;
-    color: #333;
+.header_button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
 }
 
-.dropdown-style:hover {
-    background-color: #d0d0f0;
-    color: #000;
+div {
+    margin: 5px 0;
+    color: #D6DBDF;
 }
 
+a {
+    color: #357abd;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 </style>

@@ -6,7 +6,7 @@
 
 <script setup>
 import Config from "./left_controls/Config.vue"
-import { inject, onMounted } from 'vue';
+import { inject, ref, watch, computed, onMounted } from 'vue';
 
 const model_id = inject('model_id');
 
@@ -23,15 +23,11 @@ onMounted(() => {
 }
 
 .left_control {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 25%;
+    align-items: left;
+    width: 20%;
     height: 100%;
-    background-color: #e8e8f0;
-    border-left: 5px solid #a2a2d0;
+    background-color: #D6DBDF;
     overflow-y: auto;
-    padding: 10px;
+    margin-bottom: 10px;
 }
 </style>
