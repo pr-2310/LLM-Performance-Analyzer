@@ -65,7 +65,7 @@ Access the web interface by opening a browser and navigating to http://localhost
 - Select the desired LLM from the dropdown menu in the web interface.
 - Choose the hardware configuration you want to evaluate the LLM on.
 - Specify the inference settings, such as batch size, sequence length, and quantization parameters.
-- Click the "Analyze" button to start the performance analysis.
+- After adding the input text in the inference section Click the "Run Infrence" button to start the networkwise analysis.
 - Explore the visualization of the model architecture, computational graph, and performance metrics.
 - Customize the analysis by adjusting the inference settings and comparing different LLMs and hardware configurations.
 
