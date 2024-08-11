@@ -6,7 +6,9 @@
 ```
 # Comparative Analysis of Language Models (LLMs)
 
-This project aims to provide a comprehensive comparative analysis of various Language Models (LLMs) across different hardware configurations. It allows users to evaluate the performance characteristics, computational requirements, and memory usage of LLMs through an interactive web interface.
+This project aims to provide a comprehensive comparative analysis of various Language Models (LLMs)
+across different hardware configurations.It allows users to evaluate the performance characteristics,
+computational requirements, and memory usage of LLMs through an interactive web interface.
 
 ## Contributors
 
